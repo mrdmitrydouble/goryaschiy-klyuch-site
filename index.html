@@ -45,6 +45,21 @@
   .meta-line{margin-top:1.1rem; font-size:.72rem; color:var(--muted); letter-spacing:.05em; line-height:1.9}
   .meta-line b{color:var(--ink); font-weight:600}
 
+  /* ── звуковая дорожка ── */
+  .player{margin-top:.9rem; display:flex; align-items:baseline; gap:.55rem; flex-wrap:wrap}
+  .player button{
+    font-family:ui-monospace, Menlo, monospace; font-size:.72rem; letter-spacing:.04em;
+    color:var(--muted); background:none; border:0; border-bottom:1px dotted var(--dashed);
+    padding:.1rem 0; cursor:pointer;
+  }
+  .player button::before{content:'▸ '; color:var(--fire)}
+  .player button[aria-pressed="true"]::before{content:'■ '}
+  .player button:hover{color:var(--fire); border-bottom-color:var(--fire)}
+  .player .tr{font-size:.7rem; color:var(--muted); letter-spacing:.03em}
+  #soundbox{margin-top:.7rem}
+  #soundbox[hidden]{display:none}
+  #soundbox iframe{width:100%; max-width:26rem; aspect-ratio:16/9; border:1px solid var(--line); border-radius:4px; display:block}
+
   /* ── общие ── */
   section{margin-top:3rem}
   h2{font-size:1.35rem; font-weight:600; margin-bottom:1rem; line-height:1.3}
@@ -230,6 +245,12 @@
     Лаборатория продуктивного фантазирования · июль 2026<br>
     аудитория: внутренний круг (n&nbsp;=&nbsp;5) · <b id="daycount">день —</b> с первого сообщения
   </p>
+
+  <div class="player">
+    <button id="soundbtn" aria-pressed="false" aria-controls="soundbox">включить звук</button>
+    <span class="tr mono">Plastikman — Pakard · Artifakts&nbsp;(bc), 1998</span>
+  </div>
+  <div id="soundbox" hidden></div>
 
   <!-- аннотация -->
   <div class="abstract">
@@ -754,6 +775,26 @@
 
 </div>
 <script>
+  (function(){
+    var btn = document.getElementById('soundbtn'), box = document.getElementById('soundbox');
+    if (!btn || !box) return;
+    btn.addEventListener('click', function(){
+      var on = btn.getAttribute('aria-pressed') === 'true';
+      if (on) {
+        box.innerHTML = '';
+        box.hidden = true;
+        btn.setAttribute('aria-pressed', 'false');
+        btn.textContent = 'включить звук';
+      } else {
+        box.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/YudHRt1EeY4?autoplay=1&rel=0" ' +
+          'title="Plastikman — Pakard" frameborder="0" ' +
+          'allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>';
+        box.hidden = false;
+        btn.setAttribute('aria-pressed', 'true');
+        btn.textContent = 'выключить';
+      }
+    });
+  })();
   (function(){
     var tabs = [['tab-princ','pane-princ'], ['tab-manif','pane-manif']];
     tabs.forEach(function(pair){
