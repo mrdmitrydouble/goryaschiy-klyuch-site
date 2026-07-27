@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Горящий Ключ — промежуточный отчёт</title>
+<meta name="description" content="Промежуточный отчёт о состоянии проекта. Черновик, для внутреннего круга.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>">
+<style>
+  :root{
+    --paper:#f2f1ec; --card:#faf9f6; --ink:#26282b; --muted:#6d7076;
+    --fire:#b0492c; --line:#d9d6cd; --mark:#f3e7c3; --mono-bg:#eceae3;
+    --dashed:#b9b5aa;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --paper:#1c1d1f; --card:#242628; --ink:#d9d7d1; --muted:#93969c;
+      --fire:#d97a52; --line:#3a3c40; --mark:#4a4230; --mono-bg:#2c2e31;
+      --dashed:#55575c;
+    }
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:var(--paper); color:var(--ink);
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size:17px; line-height:1.65;
+  }
+  .wrap{max-width:46rem; margin:0 auto; padding:1.4rem 1.2rem 4rem}
+  .mono{font-family:ui-monospace, Menlo, Consolas, monospace}
+
+  /* ── шапка ── */
+  .doc-head{display:flex; justify-content:space-between; align-items:flex-start; gap:1rem;
+    border-bottom:1px solid var(--line); padding-bottom:.7rem; margin-bottom:2.2rem}
+  .doc-head .org{font-size:.68rem; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); line-height:1.5}
+  .stamp{
+    font-family:ui-monospace, Menlo, monospace; font-size:.66rem; letter-spacing:.12em;
+    color:var(--fire); border:1.5px solid var(--fire); border-radius:3px;
+    padding:.3rem .55rem; transform:rotate(2.5deg); white-space:nowrap;
+    opacity:.85; flex-shrink:0; text-transform:uppercase;
+  }
+  h1{font-size:2.5rem; line-height:1.1; font-weight:400; letter-spacing:.01em}
+  .subtitle{font-size:1.12rem; color:var(--muted); font-style:italic; margin-top:.5rem; line-height:1.45}
+  .meta-line{margin-top:1.1rem; font-size:.72rem; color:var(--muted); letter-spacing:.05em; line-height:1.9}
+  .meta-line b{color:var(--ink); font-weight:600}
+
+  /* ── общие ── */
+  section{margin-top:3rem}
+  h2{font-size:1.35rem; font-weight:600; margin-bottom:1rem; line-height:1.3}
+  h2 .num{color:var(--fire); font-weight:400; margin-right:.4rem}
+  p{margin-bottom:.9rem}
+  p:last-child{margin-bottom:0}
+  em{font-style:italic}
+  .term{background:var(--mark); padding:0 .22em; border-radius:2px}
+  .margin-note{
+    font-size:.82rem; color:var(--muted); border-left:2px dashed var(--dashed);
+    padding:.15rem 0 .15rem .8rem; margin:1rem 0; font-style:italic;
+  }
+  .abstract{
+    background:var(--card); border:1px solid var(--line); border-radius:4px;
+    padding:1.3rem 1.4rem; margin-top:1.6rem;
+  }
+  .abstract .label{font-size:.68rem; letter-spacing:.16em; text-transform:uppercase; color:var(--muted); margin-bottom:.6rem}
+  .keywords{margin-top:1rem; font-size:.85rem; color:var(--muted); line-height:1.7}
+
+  /* ── таймлайн ── */
+  .tl{list-style:none; margin-top:1.4rem; border-left:2px solid var(--line); padding-left:0}
+  .tl-year{
+    font-family:ui-monospace, Menlo, monospace; font-size:.72rem; letter-spacing:.18em;
+    color:var(--muted); text-transform:uppercase; padding:.4rem 0 .4rem 1.35rem; margin-top:1.1rem;
+  }
+  .tl-year:first-child{margin-top:0}
+  .tl li.ev{position:relative; padding:0 0 1.05rem 1.35rem}
+  .tl li.ev::before{
+    content:''; position:absolute; left:-6px; top:.5em; width:10px; height:10px;
+    border-radius:50%; background:var(--paper); border:2px solid var(--fire);
+  }
+  .tl li.ev.future::before{border-style:dashed; border-color:var(--muted)}
+  .tl .d{font-family:ui-monospace, Menlo, monospace; font-size:.72rem; color:var(--fire); letter-spacing:.06em}
+  .tl li.ev.future .d{color:var(--muted)}
+  .tl .t{display:block; margin-top:.1rem}
+  .tl details{margin-top:.3rem}
+  .tl summary{
+    cursor:pointer; font-size:.78rem; color:var(--muted); font-style:italic;
+    list-style:none; -webkit-user-select:none; user-select:none;
+  }
+  .tl summary::-webkit-details-marker{display:none}
+  .tl summary::before{content:'⌁ '; color:var(--fire); font-style:normal}
+  .tl details[open] summary{opacity:.55}
+  .q{
+    margin-top:.45rem; padding:.6rem .85rem; background:var(--card);
+    border-left:3px solid var(--fire); border-radius:0 4px 4px 0;
+    font-size:.9rem; line-height:1.55;
+  }
+  .q .who{display:block; margin-top:.35rem; font-size:.72rem; color:var(--muted); font-style:normal; font-family:ui-monospace, Menlo, monospace}
+
+  /* ── принципы ── */
+  .princ{margin-top:1.3rem; counter-reset:pr}
+  .princ li{list-style:none; counter-increment:pr; margin-bottom:1.15rem; padding-left:2.1rem; position:relative}
+  .princ li::before{
+    content:counter(pr); position:absolute; left:0; top:.1em;
+    font-family:ui-monospace, Menlo, monospace; font-size:.8rem; color:var(--fire);
+    border:1px solid var(--line); border-radius:50%; width:1.5rem; height:1.5rem;
+    display:flex; align-items:center; justify-content:center; background:var(--card);
+  }
+  .princ b{font-weight:600}
+  .core-quote{
+    margin-top:1.6rem; text-align:center; font-style:italic; font-size:1.05rem;
+    padding:1.1rem; border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  }
+  .core-quote .src{display:block; margin-top:.4rem; font-size:.72rem; color:var(--muted); font-style:normal; font-family:ui-monospace, Menlo, monospace}
+
+  /* ── люди ── */
+  .crew{display:grid; grid-template-columns:1fr 1fr; gap:.8rem; margin-top:1.3rem}
+  @media(max-width:560px){.crew{grid-template-columns:1fr}}
+  .crew .c{background:var(--card); border:1px solid var(--line); border-radius:4px; padding:.95rem 1.05rem}
+  .crew .n{font-weight:600}
+  .crew .r{font-size:.72rem; color:var(--fire); font-family:ui-monospace, Menlo, monospace; letter-spacing:.04em; margin:.15rem 0 .4rem}
+  .crew .about{font-size:.88rem; line-height:1.55; color:var(--ink)}
+  .aux{margin-top:1rem; font-size:.86rem; color:var(--muted)}
+
+  /* ── таблицы ── */
+  .tbl-wrap{overflow-x:auto; margin-top:1.2rem}
+  table{border-collapse:collapse; width:100%; font-size:.88rem}
+  th{
+    text-align:left; font-family:ui-monospace, Menlo, monospace; font-size:.66rem;
+    letter-spacing:.12em; text-transform:uppercase; color:var(--muted);
+    border-bottom:2px solid var(--line); padding:.45rem .7rem .45rem 0; font-weight:500;
+  }
+  td{border-bottom:1px solid var(--line); padding:.55rem .7rem .55rem 0; vertical-align:top; line-height:1.5}
+  td:first-child{font-weight:600; white-space:normal}
+  .st{font-size:.83rem}
+  .st.done::before{content:'● '; color:#5d7d54}
+  .st.wip::before{content:'◐ '; color:var(--fire)}
+  .st.plan::before{content:'○ '; color:var(--muted)}
+
+  /* ── вопросы ── */
+  .qs{margin-top:1.2rem}
+  .qs .qq{background:var(--card); border:1px dashed var(--dashed); border-radius:4px; padding:1rem 1.15rem; margin-bottom:.8rem}
+  .qs .qq .h{font-weight:600; margin-bottom:.3rem}
+  .qs .qq .h .vn{font-family:ui-monospace, Menlo, monospace; font-size:.72rem; color:var(--fire); margin-right:.45rem}
+  .qs .qq p{font-size:.9rem; margin:0; color:var(--ink)}
+
+  /* ── фото ── */
+  .figs{display:grid; grid-template-columns:1fr 1fr; gap:1.1rem; margin-top:1.3rem}
+  @media(max-width:560px){.figs{grid-template-columns:1fr}}
+  figure.ph{margin:0}
+  figure.ph.wide{grid-column:1 / -1}
+  figure.ph img{width:100%; height:auto; display:block; border-radius:3px; border:1px solid var(--line); filter:saturate(.92)}
+  figure.ph figcaption{font-size:.76rem; color:var(--muted); margin-top:.4rem; line-height:1.5}
+  figure.ph figcaption b{color:var(--ink); font-weight:600}
+
+  /* ── словарь ── */
+  dl.gloss{margin-top:1.2rem}
+  dl.gloss dt{font-weight:600; margin-top:.9rem}
+  dl.gloss dt .pos{font-weight:400; font-style:italic; color:var(--muted); font-size:.82rem}
+  dl.gloss dd{margin-left:0; font-size:.9rem; color:var(--ink); line-height:1.55}
+
+  /* ── источники ── */
+  .sources .q{margin-top:.9rem; font-size:.95rem}
+
+  /* ── лист согласования ── */
+  .sign-note{font-size:.8rem; color:var(--muted); font-style:italic; margin-top:.5rem}
+
+  /* ── футер ── */
+  footer{
+    margin-top:4rem; border-top:1px solid var(--line); padding-top:1.2rem;
+    font-size:.78rem; color:var(--muted); line-height:1.8;
+  }
+  footer .rule{color:var(--ink)}
+  a{color:var(--fire); text-decoration:none; border-bottom:1px dotted var(--fire)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- шапка документа -->
+  <div class="doc-head">
+    <div class="org mono">Творческое объединение<br>внутренний документ · не для цитирования</div>
+    <div class="stamp" id="stamp" title="статус документа">черновик v0.4</div>
+  </div>
+
+  <h1>Горящий Ключ</h1>
+  <p class="subtitle">Промежуточный отчёт о состоянии проекта,<br>составленный по материалам чата и созвонов</p>
+  <p class="meta-line mono">
+    Лаборатория продуктивного фантазирования · июль 2026<br>
+    аудитория: внутренний круг (n&nbsp;=&nbsp;5) · <b id="daycount">день —</b> с первого сообщения
+  </p>
+
+  <!-- аннотация -->
+  <div class="abstract">
+    <div class="label mono">Аннотация</div>
+    <p>Настоящий отчёт фиксирует состояние проекта «Горящий Ключ»: пятеро инженеров, поляна на краю леса и растущий набор фантазий, доведённых до состояния «построено». За отчётный период (март 2025 — июль 2026) проведено два полевых сезона, возведена сцена, учреждён музей, написан один манифест и накоплен словарь, который пополняется быстрее, чем его успевают записывать.</p>
+    <p>Документ собран из первичных источников — 1411 сообщений чата и записей созвонов. Ничего не досочинено. Посторонним будет непонятно; так и задумано.</p>
+    <div class="keywords"><b>Ключевые слова:</b> продуктивное фантазирование · системно кайфовать · жар жизни · фотонная баня Савчука · музей Горящего Ключа · синхрон</div>
+  </div>
+
+  <!-- 1. постановка задачи -->
+  <section>
+    <h2><span class="num">1.</span>Постановка задачи</h2>
+    <p>Исходное положение: у каждого в голове живёт штука с пометкой «просто помечтать». Задача объединения — менять пометку на «можно сделать» и доводить до построенного. Рабочий термин для этой операции — <span class="term">продуктивное фантазирование</span>; операция проверена на сцене в ночном лесу, которая годами была фантазией, а теперь на ней танцуют.</p>
+    <p>Отдельная проблема, которую решает проект: существует класс разговоров и переживаний, для которых не подходит ни работа, ни город, ни мессенджер. Для них нужна своя территория — физическая и человеческая. Территория есть. Отчёт описывает, что на ней уже стоит.</p>
+    <div class="margin-note">пометка на полях: парадная версия манифеста существует отдельно и ходит по кругу; здесь — рабочая редакция, без парадности.</div>
+  </section>
+
+  <!-- 2. хронология -->
+  <section>
+    <h2><span class="num">2.</span>Хронология наблюдений</h2>
+    <p style="font-size:.88rem;color:var(--muted)">Даты — по чату. Пункты со значком ⌁ раскрываются: внутри первоисточники.</p>
+    <ul class="tl">
+      <li class="tl-year mono">2025 · сезоны первый и второй</li>
+
+      <li class="ev">
+        <span class="d">29.03.2025</span>
+        <span class="t">Появился чат. Имя проекта возникло через две минуты после первого сообщения.</span>
+        <details><summary>первоисточник</summary>
+          <div class="q">«Собственно, предлагаю так и назвать то, что мы начнём создавать летом) <…> Может выйдет ежегодный фестиваль)) <…> Деревня какая нибудь))»<span class="who">— Димон, день первый</span></div>
+        </details>
+      </li>
+
+      <li class="ev">
+        <span class="d">30.03.2025</span>
+        <span class="t">Решён главный вопрос айдентики: ключ должен гореть лезвием, а не ручкой. Витя уже прикидывает место под шестиметровый костёр.</span>
+        <details><summary>первоисточник</summary>
+          <div class="q">«Еще можно перевернуть ключ, чтоб горела не ручка, а само лезвие)»<span class="who">— Макс</span></div>
+        </details>
+      </li>
+
+      <li class="ev">
+        <span class="d">04.04.2025</span>
+        <span class="t">Куплены билеты. Точка невозврата пройдена на седьмой день проекта.</span>
+        <details><summary>первоисточник</summary>
+          <div class="q">«Билеты взяли! 3го июля будем в Горящем Ключе)»<span class="who">— Макс</span></div>
+        </details>
+      </li>
+
+      <li class="ev">
+        <span class="d">02.05.2025</span>
+        <span class="t">Сформулирован концепт «Место. Между мирами» — зона на границе леса и поля, где у входа оставляют телефон.</span>
+      </li>
+
+      <li class="ev">
+        <span class="d">08.06.2025</span>
+        <span class="t">Спроектирована кухня-бар «Граница вкусов» с ритуалами: «завтрак молчания», «суп без рецепта», «хоровая нарезка фруктов».</span>
+        <details><summary>первоисточник</summary>
+          <div class="q">«Хоровая нарезка фруктов - это заебись 😂»<span class="who">— Санёк</span></div>
+        </details>
+      </li>
+
+      <li class="ev">
+        <span class="d">03–11.07.2025</span>
+        <span class="t"><b>Фестиваль №&nbsp;1.</b> Построен своими руками, на своей земле, для своих. Гипотеза «мы можем это сделать» подтверждена экспериментально.</span>
+        <details><summary>первоисточник</summary>
+          <div class="q">«вечная туса!) хорошо в ночи выглядят нитки, кайф!»<span class="who">— Макс, с поля</span></div>
+        </details>
+      </li>
+
+      <li class="ev">
+        <span class="d">13.07.2025</span>
+        <span class="t">Следующий концепт начат до возвращения домой с предыдущего фестиваля. Установлен рекорд времени восстановления творческого импульса: отрицательная величина.</span>
+        <details><summary>первоисточник</summary>
+          <div class="q">«Ну всё, хули. Начал ебашить следующий концепт. Не успел до дому даже добраться)»<span class="who">— Димон</span></div>
+        </details>
+      </li>
+
+      <li class="ev">
+        <span class="d">14.07.2025</span>
+        <span class="t">Написан манифест «Жар Жизни» — философское ядро проекта, оформленное как правила зоны шашлыка.</span>
+        <details><summary>первоисточник</summary>
+          <div class="q">«1. Жарь как будто ты молишься. 2. Смейся как будто ты просветлён. 3. Не забывай — всё сгорит.»<span class="who">— из манифеста «Жар Жизни»</span></div>
+        </details>
+      </li>
+
+      <li class="ev">
+        <span class="d">15.07.2025</span>
+        <span class="t">Учреждён музей Горящего Ключа. Первые экспонаты определились сами.</span>
+        <details><summary>первоисточник</summary>
+          <div class="q">«Дааа уж! Это войдет в экспонаты музея Горящего Ключа)»<span class="who">— Санёк</span></div>
+        </details>
+      </li>
+
+      <li class="ev">
+        <span class="d">11.08.2025</span>
+        <span class="t">Составлена программа второго фестиваля из тринадцати пунктов; в тот же день предложен темаскаль — «баня мексиканских индейцев».</span>
+        <details><summary>первоисточник</summary>
+          <div class="q">«Ебать программа!»<span class="who">— Димон, рецензия на программу</span></div>
+        </details>
+      </li>
+
+      <li class="ev">
+        <span class="d">18–21.09.2025</span>
+        <span class="t"><b>Фестиваль №&nbsp;2 «Урожай».</b> Чайная под таинственным дубом, пленэр, фолк и диджеи, баня дикарей, проводы лета у кострища.</span>
+      </li>
+
+      <li class="ev">
+        <span class="d">16.10.2025</span>
+        <span class="t">Ретроспектива года. Главный вывод: камерность важнее масштаба.</span>
+        <details><summary>первоисточник</summary>
+          <div class="q">«Нам нужно устроить пати в узком кругу единомышленников как в первый раз»<span class="who">— Санёк; двое плюсуют</span></div>
+        </details>
+      </li>
+
+      <li class="tl-year mono">2026 · сезон третий, «год доделки»</li>
+
+      <li class="ev">
+        <span class="d">24.01.2026</span>
+        <span class="t">На поле обнаружен ветрогенератор. Классифицирован как «интрига на будущий фест».</span>
+        <details><summary>первоисточник</summary>
+          <div class="q">«Пиздец, конечно, синергия. И арт и энергия и точка притяжения разных людей»<span class="who">— Димон, экспертное заключение</span></div>
+        </details>
+      </li>
+
+      <li class="ev">
+        <span class="d">22.05.2026</span>
+        <span class="t">Зафиксировано возвращение импульса.</span>
+        <details><summary>первоисточник</summary>
+          <div class="q">«Нет ни у кого внутреннего необоснованного ощущения, что пора повторить?)» — «Есть. Я даже из Азии прилетел вчера, чтоб поближе к повторению быть))»<span class="who">— Андрюха; Димон</span></div>
+        </details>
+      </li>
+
+      <li class="ev">
+        <span class="d">25.06.2026</span>
+        <span class="t">Выбор дат сезона ведётся по четырём календарям одновременно. Методологический спор не разрешён.</span>
+        <details><summary>первоисточник</summary>
+          <div class="q">«Мне чудится или вы реально по гороскопу выбираете даты? 😂» — «Ну можно еще таро разложить)»<span class="who">— Макс; Андрюха</span></div>
+        </details>
+      </li>
+
+      <li class="ev">
+        <span class="d">23.07.2026</span>
+        <span class="t">Созвон о «зачем»: полтора часа по кругу, пять ответов, совпавших сильнее ожидаемого, ни одного спора. Итоги — в разделе 3.</span>
+      </li>
+
+      <li class="ev">
+        <span class="d">26.07.2026</span>
+        <span class="t">Начата систематическая фиксация культурного кода: словарь, база артефактов, репозиторий. Этот отчёт — часть процесса.</span>
+        <details><summary>первоисточник</summary>
+          <div class="q">«проявляю наш культурный код, будем иметь базу артефактов и из них культуру проявлять системно, без хуйни»<span class="who">— Димон</span></div>
+        </details>
+      </li>
+
+      <li class="ev future">
+        <span class="d">06.08.2026</span>
+        <span class="t">Запланирован созвон: формат, численность, даты. Каждый приносит два-три окна в календаре.</span>
+      </li>
+    </ul>
+  </section>
+
+  <!-- 3. принципы -->
+  <section>
+    <h2><span class="num">3.</span>Принципы <span style="font-weight:400;color:var(--muted)">(рабочая редакция)</span></h2>
+    <p style="font-size:.88rem;color:var(--muted)">Сведены по материалам созвона 23.07.2026 и чата. Формулировки рабочие; парадные — в манифесте.</p>
+    <ol class="princ">
+      <li><b>Фантазии переводятся в реализуемое.</b> Базовая операция проекта. Побочный эффект операции: энергия.</li>
+      <li><b>Строит и празднует один и тот же круг.</b> Решено окончательно: кто строит, тот и тусует. Гостей-потребителей не предусмотрено конструкцией.</li>
+      <li><b>Далёкие миры сталкиваются намеренно.</b> Физик разговаривает с музыкантом — посередине получается третье. Каждый приносит в дар то, в чём силён: лекцию, чай, свет, звук, расчёт нагрузок.</li>
+      <li><b>Маски сдаются на входе, рядом с телефонами.</b> Место, где никому ничего не доказывают. Ради этой возможности всё и затевалось.</li>
+      <li><b>Баланс сводится по энергии.</b> Критерий правильности события: сил после него больше, чем до. Мечтать и не делать — расход без прихода; делать и не доделывать — хуже вдвое.</li>
+      <li><b>Невыразимому оставлено место.</b> Есть переживания, о которых не разговаривают, — их можно только разделить. Для них существует зона, где телефон остаётся у входа. В планах — событие вообще без слов.</li>
+      <li><b>Культура выращивается, а не назначается.</b> Словарь, музей, врата и жесты завелись сами — там, где люди регулярно делают настоящее вместе. Задача проекта: замечать и фиксировать.</li>
+    </ol>
+    <div class="core-quote">
+      «Пока живо — жарим. Пока жарко — живём.»
+      <span class="src">формула ядра · манифест «Жар Жизни», 14.07.2025</span>
+    </div>
+  </section>
+
+  <!-- 4. личный состав -->
+  <section>
+    <h2><span class="num">4.</span>Личный состав</h2>
+    <div class="crew">
+      <div class="c">
+        <div class="n">Димон</div>
+        <div class="r">генератор концептов</div>
+        <div class="about">Философское ядро, ритуалы, чайные церемонии, тексты. Отвечает за то, чтобы у любого шашлыка была космология. Собрания открывает словом «Пацантре».</div>
+      </div>
+      <div class="c">
+        <div class="n">Макс</div>
+        <div class="r">человек-структура</div>
+        <div class="about">Планирование, таблицы закупок, сухая ирония вслед за пафосом. Автор термина «продуктивное фантазирование». На мероприятиях присутствует в составе себя.</div>
+      </div>
+      <div class="c">
+        <div class="n">Санёк</div>
+        <div class="r">хозяин полевой базы · мотор</div>
+        <div class="about">Земля, сцена, стройка, козы. Девиз земель: «Природа. Культура. Человек». Одобрение фиксирует по открытой шкале: от «Заебись» до «Заебись&nbsp;х2».</div>
+      </div>
+      <div class="c">
+        <div class="n">Андрюха</div>
+        <div class="r">инженер-расчётчик</div>
+        <div class="about">Нагрузки, тросы, купола, здоровый скепсис. В его честь названа баня, которая ещё не построена (см. раздел 5). Мораль: «нехуй ссать, кайфуй».</div>
+      </div>
+      <div class="c">
+        <div class="n">Витя</div>
+        <div class="r">Атлас</div>
+        <div class="about">Территория, крупные объекты, шестиметровый костёр. Самый вежливый участник чата: здоровается почти в каждом сообщении. «Принято.»</div>
+      </div>
+      <div class="c">
+        <div class="n">Вспомогательные подразделения</div>
+        <div class="r">внештатно</div>
+        <div class="about">Козы — «бензопила, триммер и мульчер в одной морде», прикомандированы к дому на дереве. Летучие мыши — противокомариная авиация. Нейросети — приглашённые консультанты без права голоса.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. МТБ -->
+  <section>
+    <h2><span class="num">5.</span>Материально-техническая база</h2>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Объект</th><th>Состояние</th></tr></thead>
+        <tbody>
+          <tr><td>Сцена в ночном лесу</td><td class="st done">построена; эксплуатируется по назначению</td></tr>
+          <tr><td>Кухня-бар «Граница вкусов»</td><td class="st done">функционирует; крыша — в плане года</td></tr>
+          <tr><td>«Место. Между мирами»</td><td class="st done">действует; телефоны сдаются у входа</td></tr>
+          <tr><td>Сетка для лазания</td><td class="st wip">натянута; предстоит дотянуть</td></tr>
+          <tr><td>Зеркальный шар</td><td class="st done">установлен; диаметр — итог продолжительных переговоров</td></tr>
+          <tr><td>Музей Горящего Ключа</td><td class="st wip">учреждён; фонд пополняется</td></tr>
+          <tr><td>Темаскаль (баня мексиканских индейцев)</td><td class="st wip">спроектирован: купол Ø 4 м, стеклопластиковая арматура, 150 м прутка</td></tr>
+          <tr><td>Дом на дереве</td><td class="st wip">дерево выбрано; площадку расчищают козы (не метафора)</td></tr>
+          <tr><td>Фотонная баня Савчука</td><td class="st plan">имя присвоено до начала строительства</td></tr>
+          <tr><td>Ветрогенератор</td><td class="st wip">установлен на поле; официальный статус — «интрига»</td></tr>
+          <tr><td>Костёр, 6 м</td><td class="st plan">место прикидывается с 30.03.2025; ожидает своего сезона</td></tr>
+          <tr><td>Словарь проекта</td><td class="st wip">пополняется; избранное — в Приложении А</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="margin-note">принято решение года: новых строек не начинать, начатое — доводить. Список выше с этим решением почти совместим.</div>
+  </section>
+
+  <!-- 6. открытые вопросы -->
+  <section>
+    <h2><span class="num">6.</span>Открытые вопросы</h2>
+    <div class="qs">
+      <div class="qq">
+        <div class="h"><span class="vn mono">В-1</span>Кто мы: кемп или маленький Бёрн?</div>
+        <p>Одна команда с общими проектами или площадка для нескольких команд. От ответа зависит весь масштаб. Вынесено на созвон 06.08.</p>
+      </div>
+      <div class="qq">
+        <div class="h"><span class="vn mono">В-2</span>Сколько нас должно быть?</div>
+        <p>Десять — управляемо. Тридцать — предел инфраструктуры. Истина предположительно между.</p>
+      </div>
+      <div class="qq">
+        <div class="h"><span class="vn mono">В-3</span>Когда едем в этом году?</div>
+        <p>Круг «когда» дважды не состоялся. Действующая методология планирования: «как пойдёт».</p>
+      </div>
+      <div class="qq">
+        <div class="h"><span class="vn mono">В-4</span>Девиз</div>
+        <p>У объединения — отсутствует («Природа. Культура. Человек» — девиз земель, он остаётся за ними). Принято решение не сочинять: девизы такого рода не пишутся на созвонах — они вырываются у кого-то сами в правильный момент. Ведётся прослушивание эфира.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. фотофиксация -->
+  <section>
+    <h2><span class="num">7.</span>Фотофиксация</h2>
+    <div class="figs">
+      <figure class="ph wide">
+        <img src="assets/stage-disco.jpg" alt="Деревянный настил сцены в лесу, зеркальный шар над ним" loading="lazy">
+        <figcaption><b>Рис. 1.</b> Сцена, июль 2025. Из фантазии — в эксплуатацию.</figcaption>
+      </figure>
+      <figure class="ph">
+        <img src="assets/logo-2025-03-29.jpg" alt="Логотип Горящего Ключа: закат над волнами" loading="lazy">
+        <figcaption><b>Рис. 2.</b> Символика. Обнаружена в чате в первый же день наблюдений.</figcaption>
+      </figure>
+      <figure class="ph">
+        <img src="assets/land-aerial.jpg" alt="Поля и леса с высоты птичьего полёта" loading="lazy">
+        <figcaption><b>Рис. 3.</b> Полевая база. Вид с воздуха.</figcaption>
+      </figure>
+      <figure class="ph">
+        <img src="assets/night-red.jpg" alt="Красные световые трубки среди ночного леса" loading="lazy">
+        <figcaption><b>Рис. 4.</b> Световой объект в режиме эксплуатации. Время съёмки — 02:31.</figcaption>
+      </figure>
+      <figure class="ph">
+        <img src="assets/kitchen-night.jpg" alt="Ночная кухня под тентом, двое за работой" loading="lazy">
+        <figcaption><b>Рис. 5.</b> Кухня. Ночная смена, сентябрь 2025.</figcaption>
+      </figure>
+      <figure class="ph">
+        <img src="assets/urozhai-flags.jpg" alt="Гирлянда разноцветных флажков в лесу, развеска картин" loading="lazy">
+        <figcaption><b>Рис. 6.</b> «Урожай», сентябрь 2025. Монтаж экспозиции пленэра.</figcaption>
+      </figure>
+      <figure class="ph">
+        <img src="assets/jbl-bochka.jpg" alt="Портативная колонка внутри ржавой бочки" loading="lazy">
+        <figcaption><b>Рис. 7.</b> Акустическая система в защитном кожухе полевого исполнения.</figcaption>
+      </figure>
+      <figure class="ph wide">
+        <img src="assets/polyana-2026.jpg" alt="Ночная поляна с огнями лагеря в тумане" loading="lazy">
+        <figcaption><b>Рис. 8.</b> Поляна. Сезон третий, май 2026.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- приложение А -->
+  <section>
+    <h2>Приложение А. Словарь <span style="font-weight:400;color:var(--muted)">(избранное)</span></h2>
+    <dl class="gloss">
+      <dt>продуктивное фантазирование <span class="pos">методол.</span></dt>
+      <dd>Перевод фантазий в реализуемое; базовая дисциплина объединения. Термин введён 23.07.2026, название немедленно застолблено под лабораторию.</dd>
+      <dt>системно кайфовать <span class="pos">практ.</span></dt>
+      <dd>Получать удовольствие регулярным, а не случайным образом.</dd>
+      <dt>фотонная баня Савчука <span class="pos">объект, проектн.</span></dt>
+      <dd>Баня, в которую заходит солнечный луч и раскладывается призмами. Разг. синоним: «гиперболоид инженера Гарина».</dd>
+      <dt>заебись <span class="pos">терминол.</span></dt>
+      <dd>Базовая единица одобрения. Уточнение носителя языка: «в используемом мной контексте ебучий значит заебись».</dd>
+      <dt>синхрон <span class="pos">набл.</span></dt>
+      <dd>Совпадение, которому немедленно придаётся значение. Фиксируется возгласом «Бля, синхрон». Считается сигналом, что всё делается правильно.</dd>
+      <dt>«как пойдёт» <span class="pos">методол.</span></dt>
+      <dd>Официально задокументированная методология планирования дат.</dd>
+      <dt>Пацантре <span class="pos">обращ.</span></dt>
+      <dd>Протокольная форма обращения к собранию.</dd>
+      <dt>музей Горящего Ключа <span class="pos">институц.</span></dt>
+      <dd>Собрание экспонатов истории проекта. Экспонатом может стать что угодно, и становится.</dd>
+      <dt>шашлык просветления <span class="pos">филос.</span></dt>
+      <dd>Практика, при которой состоит манифест «Жар Жизни». Правило первое: «жарь, как будто ты молишься».</dd>
+    </dl>
+  </section>
+
+  <!-- приложение Б -->
+  <section class="sources">
+    <h2>Приложение Б. Первичные источники <span style="font-weight:400;color:var(--muted)">(избранное)</span></h2>
+    <div class="q">«Мифистов мало, но они везде)»<span class="who">— Макс, 29.03.2025</span></div>
+    <div class="q">«Построить там тусовочную зону и затусить на ней так, как задумывали мы и сам Господь Бог!))»<span class="who">— Димон, 29.03.2025</span></div>
+    <div class="q">«Как же всё таки ахуенно что у нас есть мозговой центр из нескольких человек. Я бы ахуел сам всё это креативить 😁»<span class="who">— Санёк, 30.08.2025</span></div>
+    <div class="q">«Главное себя притащи )))»<span class="who">— Санёк, 01.07.2025</span></div>
+    <div class="q">«Как-то оно само так получилось) Видимо, это была неизбежная форма, через которую Вселенная хотела пройти)»<span class="who">— Димон, 30.11.2025</span></div>
+    <div class="q">«Да, в этот раз нормальная туса будет😉»<span class="who">— Санёк, 24.07.2026 · из последних записей</span></div>
+  </section>
+
+  <!-- лист согласования -->
+  <section>
+    <h2>Лист согласования <span style="font-weight:400;color:var(--muted)">(проект)</span></h2>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Участник</th><th>Виза</th><th>Прогноз визы (по данным чата)</th></tr></thead>
+        <tbody>
+          <tr><td>Димон</td><td class="mono" style="color:var(--muted)">___________</td><td>«Ебать программа!»</td></tr>
+          <tr><td>Макс</td><td class="mono" style="color:var(--muted)">___________</td><td>«Отличная идея, начинаем тщательную подготовку))»</td></tr>
+          <tr><td>Санёк</td><td class="mono" style="color:var(--muted)">___________</td><td>«Заебись х2 💪💪»</td></tr>
+          <tr><td>Андрюха</td><td class="mono" style="color:var(--muted)">___________</td><td>«Мораль - нехуй ссать, кайфуй)»</td></tr>
+          <tr><td>Витя</td><td class="mono" style="color:var(--muted)">___________</td><td>«Принято.»</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="sign-note">Подписи не собраны: отчёт черновой. Возражения любой силы принимаются и вносятся.</p>
+  </section>
+
+  <footer>
+    <p>Отчёт собран ИИ-системой Ключа. Неточности — на совести транскрипции.</p>
+    <p class="rule">Правило то же, что в репозитории: если что-то здесь не норм — скажи, Дима уберёт. Совсем.</p>
+    <p class="mono" style="margin-top:.6rem">следующий созвон: 06.08.2026 · повестка: В-1, В-2, В-3</p>
+  </footer>
+
+</div>
+<script>
+  (function(){
+    var t0 = new Date(2025, 2, 29); // 29.03.2025
+    var days = Math.floor((Date.now() - t0.getTime()) / 86400000) + 1;
+    var el = document.getElementById('daycount');
+    if (el && days > 0) el.textContent = 'день ' + days;
+  })();
+</script>
+</body>
+</html>
