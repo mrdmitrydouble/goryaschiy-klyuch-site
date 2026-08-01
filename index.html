@@ -222,6 +222,63 @@
   .sources .q{margin-top:.9rem; font-size:.95rem}
   .sign-note{font-size:.8rem; color:var(--muted); font-style:italic; margin-top:.5rem}
 
+  /* ── направления: окна в другие миры ── */
+  .win{
+    display:block; position:relative; overflow:hidden;
+    margin-top:1.4rem; border-radius:5px; border:1px solid var(--line);
+    background:linear-gradient(180deg,#05070d 0%,#0b1120 62%,#05070d 100%);
+    color:#cdd3e1; padding:2.8rem 1.6rem 2.4rem;
+  }
+  .win canvas{position:absolute; inset:0; width:100%; height:100%; opacity:0; transition:opacity 1.8s ease}
+  .win canvas.on{opacity:1}
+  .win .in{position:relative}
+  .win .eyebrow{font-family:ui-monospace, Menlo, monospace; font-size:.63rem; letter-spacing:.22em;
+    text-transform:uppercase; color:#8d7c60; margin-bottom:1.15rem}
+  .win .t{font-size:1.5rem; line-height:1.28; color:#e4e2dc; letter-spacing:.01em}
+  .win .l{font-size:.92rem; line-height:1.62; color:#8b93a6; margin-top:.8rem; max-width:27rem}
+  .win .go{display:inline-block; font-family:ui-monospace, Menlo, monospace; font-size:.71rem;
+    letter-spacing:.13em; color:#e6b872; margin-top:1.5rem;
+    border-bottom:1px dotted rgba(230,184,114,.4); padding-bottom:.2rem}
+  .win:hover .go{border-bottom-color:#e6b872}
+  .win:focus-visible{outline:2px solid var(--fire); outline-offset:3px}
+
+  .win-empty{
+    margin-top:.75rem; border:1px dashed var(--dashed); border-radius:5px;
+    background:var(--card); padding:1.1rem 1.3rem;
+  }
+  .win-empty .eyebrow{font-family:ui-monospace, Menlo, monospace; font-size:.63rem;
+    letter-spacing:.22em; text-transform:uppercase; color:var(--muted); margin-bottom:.5rem}
+  .win-empty p{font-size:.88rem; color:var(--muted); margin:0}
+  .addlink{
+    display:inline-block; margin-top:.75rem; background:none; border:0; padding:0;
+    font-family:ui-monospace, Menlo, monospace; font-size:.7rem; letter-spacing:.1em;
+    color:var(--fire); border-bottom:1px dotted var(--fire); cursor:pointer;
+  }
+
+  /* ── панель модулей ── */
+  .rail{
+    position:sticky; top:0; z-index:20;
+    display:flex; align-items:center; gap:.4rem; flex-wrap:wrap;
+    margin:0 -1.2rem 1.8rem; padding:.55rem 1.2rem;
+    background:var(--paper); border-bottom:1px solid var(--line);
+  }
+  .rail-label{font-size:.62rem; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--muted); margin-right:.2rem}
+  .mod{
+    font-family:ui-monospace, Menlo, monospace; font-size:.68rem; letter-spacing:.08em;
+    text-transform:uppercase; padding:.34rem .72rem; border:1px solid var(--line);
+    border-radius:99px; background:var(--card); color:var(--muted);
+    text-decoration:none; cursor:pointer; white-space:nowrap;
+  }
+  .mod:hover{color:var(--fire); border-color:var(--fire)}
+  .mod[aria-current="page"]{border-color:var(--fire); color:var(--fire); background:var(--mark)}
+  .mod.add{border-style:dashed}
+
+  .mod:focus-visible, .addlink:focus-visible, .tl summary:focus-visible,
+  .sw:focus-visible, .player button:focus-visible{
+    outline:2px solid var(--fire); outline-offset:3px;
+  }
+
   footer{
     margin-top:4rem; border-top:1px solid var(--line); padding-top:1.2rem;
     font-size:.78rem; color:var(--muted); line-height:1.8;
@@ -232,6 +289,14 @@
 </head>
 <body>
 <div class="wrap">
+
+  <!-- панель модулей -->
+  <nav class="rail" aria-label="Модули Ключа">
+    <span class="rail-label mono">модули</span>
+    <a class="mod" href="index.html" aria-current="page">отчёт</a>
+    <a class="mod" href="kapsula.html">капсула</a>
+    <a class="mod add" href="dobavit.html">+ своё</a>
+  </nav>
 
   <!-- шапка документа -->
   <div class="doc-head">
@@ -265,6 +330,7 @@
     <h2><span class="num">1.</span>Постановка задачи</h2>
     <p>Исходное положение: у каждого в голове живёт штука с пометкой «просто помечтать». Задача объединения — менять пометку на «можно сделать» и доводить до построенного. Рабочий термин для этой операции — <span class="term">продуктивное фантазирование</span>; операция проверена на сцене в ночном лесу, которая годами была фантазией, а теперь на ней танцуют.</p>
     <p>Отдельная проблема, которую решает проект: существует класс разговоров и переживаний, для которых не подходит ни работа, ни город, ни мессенджер. Для них нужна своя территория — физическая и человеческая. Территория есть. Отчёт описывает, что на ней уже стоит.</p>
+    <div class="margin-note">Про сами эти разговоры и переживания — отдельная страница, раздел 8.</div>
   </section>
 
   <!-- 2. хронология -->
@@ -660,6 +726,29 @@
     </div>
   </section>
 
+  <!-- 8. направления -->
+  <section>
+    <h2><span class="num">8.</span>Направления</h2>
+    <p>Ключ — платформа. На неё можно принести своё: событие, ритуал, лекцию, практику, что угодно ещё, чему нужны эти люди и эта земля. Направления не обязаны быть похожими — ни по сути, ни по настроению, ни по виду. Общее у них только место и круг.</p>
+    <p class="lead">Отсюда устройство раздела: каждое направление живёт на своей странице и выглядит так, как выглядит оно само. Ниже — окна в них.</p>
+
+    <a class="win" href="kapsula.html">
+      <canvas aria-hidden="true"></canvas>
+      <div class="in">
+        <div class="eyebrow">капсула · дима</div>
+        <div class="t">Оно происходит и сейчас.</div>
+        <p class="l">Та же весна двадцать пятого, с которой начинается хронология в разделе&nbsp;2. Только изнутри и от первого лица.</p>
+        <span class="go">войти →</span>
+      </div>
+    </a>
+
+    <div class="win-empty">
+      <div class="eyebrow">свободное окно</div>
+      <p>Здесь может стоять твоё. Отдельная страница в том виде, в каком эта штука есть у тебя в голове: сводить её к стилю отчёта не нужно.</p>
+      <a class="addlink" href="dobavit.html">занять это место →</a>
+    </div>
+  </section>
+
   <!-- приложение А -->
   <section>
     <h2>Приложение А. Словарь <span style="font-weight:400;color:var(--muted)">(избранное)</span></h2>
@@ -745,8 +834,8 @@
     <div class="sub-h">вариант 2 · просто посмотреть</div>
     <p style="margin-top:.9rem">Открыть репозиторий по ссылке из приглашения, нажать зелёную кнопку <b>Code</b> → <b>Download ZIP</b>, и закинуть этот ZIP в чат с любым ИИ — ChatGPT, Gemini, Claude. Он всё прочитает, разберёт и обсудит. Менять и сохранять не сможет, за свежей версией придётся скачивать заново.</p>
 
-    <p class="lead" style="margin-top:1.2rem">Сломать здесь сложно: у всего есть история, любое изменение откатывается. Если двое случайно правят одно и то же, ИИ по правилам не станет решать сам — покажет человеку. Что-то пошло не так — напиши Диме.</p>
-    <p class="lead">Остальные правила тоже зашиты внутрь: наши переписки ИИ не редактирует, личное одного не показывает другим, ничего не публикует и никому не пишет без явного «да». Подробная инструкция — файл <code>ONBOARDING_ai_tools.md</code> в репозитории.</p>
+    <p class="lead" style="margin-top:1.2rem">Сломать тут трудно. У всего есть история, любое изменение откатывается назад. Если двое залезли в одно и то же, ИИ сам решать не станет — спросит. Что-то пошло не так — пиши Диме.</p>
+    <p class="lead">Правила он читает сам, они лежат там же в папке: наши переписки не трогает, личное одного другим не показывает, никуда ничего не выкладывает и никому не пишет без прямого «да».</p>
   </section>
 
   <!-- лист согласования -->
@@ -774,6 +863,7 @@
   </footer>
 
 </div>
+
 <script>
   (function(){
     var btn = document.getElementById('soundbtn'), box = document.getElementById('soundbox');
@@ -815,6 +905,65 @@
     var days = Math.floor((Date.now() - t0.getTime()) / 86400000) + 1;
     var el = document.getElementById('daycount');
     if (el && days > 0) el.textContent = 'день ' + days;
+  })();
+  // окно направления: та же сеть, что и на самой странице, только тише
+  (function(){
+    var cvs = document.querySelectorAll('.win canvas');
+    if (!cvs.length) return;
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    Array.prototype.forEach.call(cvs, function(cv){
+      var ctx = cv.getContext('2d'), box = cv.parentNode;
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var W = 0, H = 0, pts = [];
+      function seed(){
+        pts = [];
+        for (var i = 0; i < 16; i++) pts.push({
+          x: Math.random() * W, y: Math.random() * H,
+          vx: (Math.random() - 0.5) * 0.09, vy: (Math.random() - 0.5) * 0.09,
+          r: 0.7 + Math.random() * 1.1, warm: Math.random() > 0.3
+        });
+      }
+      function size(){
+        W = box.clientWidth; H = box.clientHeight;
+        if (!W || !H) return;
+        cv.width = W * dpr; cv.height = H * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        if (!pts.length) seed();
+      }
+      function frame(){
+        ctx.clearRect(0, 0, W, H);
+        var i, j, dx, dy, d, p;
+        for (i = 0; i < pts.length; i++) for (j = i + 1; j < pts.length; j++){
+          dx = pts[i].x - pts[j].x; dy = pts[i].y - pts[j].y;
+          d = Math.sqrt(dx * dx + dy * dy);
+          if (d < 96){
+            // нить, а не отрезок: лёгкий изгиб, как на самой странице модуля
+            var bend = (((i * 31 + j * 17) % 13) - 6) / 6 * 0.08;
+            var mx = (pts[i].x + pts[j].x) / 2 - (dy / (d || 1)) * bend * d;
+            var my = (pts[i].y + pts[j].y) / 2 + (dx / (d || 1)) * bend * d;
+            ctx.strokeStyle = 'rgba(96,116,178,' + ((1 - d / 96) * 0.24).toFixed(3) + ')';
+            ctx.lineWidth = 0.5 + 0.4 * (1 - d / 96); ctx.lineCap = 'round';
+            ctx.beginPath(); ctx.moveTo(pts[i].x, pts[i].y);
+            ctx.quadraticCurveTo(mx, my, pts[j].x, pts[j].y); ctx.stroke();
+          }
+        }
+        for (i = 0; i < pts.length; i++){
+          p = pts[i];
+          if (!reduced){
+            p.x += p.vx; p.y += p.vy;
+            if (p.x < -8) p.x = W + 8; else if (p.x > W + 8) p.x = -8;
+            if (p.y < -8) p.y = H + 8; else if (p.y > H + 8) p.y = -8;
+          }
+          ctx.fillStyle = p.warm ? 'rgba(230,184,114,.5)' : 'rgba(140,160,215,.42)';
+          ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, 6.2832); ctx.fill();
+        }
+        if (!reduced) requestAnimationFrame(frame);
+      }
+      size();
+      window.addEventListener('resize', size);
+      requestAnimationFrame(function(){ cv.classList.add('on'); });
+      if (reduced) frame(); else requestAnimationFrame(frame);
+    });
   })();
 </script>
 </body>

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Поставить своё — Горящий Ключ</title>
+<meta name="description" content="Свободное место на сайте Ключа и как его занять.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔥</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;500&family=IBM+Plex+Sans:wght@300;400;600&family=IBM+Plex+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ground:#14100b; --raised:#1e1810; --edge:#332a1d;
+    --ink:#ece4d6; --dim:#9c8e78;
+    --amber:#e39a4a; --fire:#c9603a;
+    --stake:#5a4a33;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%; scroll-behavior:smooth}
+  body{
+    background:var(--ground); color:var(--ink);
+    font-family:'IBM Plex Sans', system-ui, sans-serif; font-weight:300;
+    font-size:17px; line-height:1.62;
+  }
+  /* тёплый свет лампы сверху — единственный источник в этой странице */
+  body::before{
+    content:''; position:fixed; inset:0 0 auto 0; height:70vh; pointer-events:none; z-index:0;
+    background:radial-gradient(120% 100% at 50% -18%, rgba(227,154,74,.16), rgba(227,154,74,0) 62%);
+  }
+  .wrap{position:relative; z-index:1; max-width:42rem; margin:0 auto; padding:0 1.2rem 5rem}
+  .mono{font-family:'IBM Plex Mono', monospace}
+
+  /* панель модулей — та же, что в отчёте */
+  .rail{
+    position:sticky; top:0; z-index:20;
+    display:flex; align-items:center; gap:.4rem; flex-wrap:wrap;
+    margin:0 -1.2rem 2.4rem; padding:.55rem 1.2rem;
+    background:var(--ground); border-bottom:1px solid var(--edge);
+  }
+  .rail-label{font-family:'IBM Plex Mono', monospace; font-size:.62rem; letter-spacing:.2em;
+    text-transform:uppercase; color:var(--dim); margin-right:.2rem}
+  .mod{
+    font-family:'IBM Plex Mono', monospace; font-size:.68rem; letter-spacing:.08em;
+    text-transform:uppercase; padding:.34rem .72rem; border:1px solid var(--edge);
+    border-radius:99px; background:var(--raised); color:var(--dim);
+    text-decoration:none; cursor:pointer; white-space:nowrap;
+  }
+  .mod:hover{color:var(--amber); border-color:var(--amber)}
+  .mod[aria-current="page"]{border-color:var(--amber); color:var(--amber); background:rgba(227,154,74,.12)}
+  .mod.add{border-style:dashed}
+  .mod:focus-visible{outline:2px solid var(--amber); outline-offset:3px}
+
+  /* шапка */
+  .eyebrow{font-family:'IBM Plex Mono', monospace; font-size:.64rem; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--dim)}
+  h1{
+    font-family:'Oswald', sans-serif; font-weight:500;
+    font-size:clamp(2.6rem, 13vw, 4.4rem); line-height:.98; letter-spacing:.005em;
+    text-transform:uppercase; margin:.9rem 0 0;
+  }
+  h1 em{font-style:normal; color:var(--amber)}
+  .lead{font-size:1.06rem; color:var(--ink); margin-top:1.2rem; max-width:32rem}
+  .lead b{font-weight:600}
+
+  /* размеченный участок */
+  .plot{
+    position:relative; margin:2.4rem 0 0; border:1px dashed var(--stake); border-radius:2px;
+    min-height:9.5rem; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    gap:.5rem; padding:1.6rem 1rem; text-align:center;
+  }
+  .plot::before, .plot::after,
+  .plot i::before, .plot i::after{
+    content:''; position:absolute; width:9px; height:9px; border:1px solid var(--amber); opacity:.75;
+  }
+  .plot::before{left:-5px; top:-5px; border-right:0; border-bottom:0}
+  .plot::after{right:-5px; top:-5px; border-left:0; border-bottom:0}
+  .plot i::before{left:-5px; bottom:-5px; border-right:0; border-top:0}
+  .plot i::after{right:-5px; bottom:-5px; border-left:0; border-top:0}
+  .plot .big{font-family:'Oswald', sans-serif; font-weight:300; font-size:1.5rem;
+    text-transform:uppercase; letter-spacing:.04em; color:var(--dim)}
+  .plot .small{font-family:'IBM Plex Mono', monospace; font-size:.66rem; letter-spacing:.18em;
+    text-transform:uppercase; color:var(--stake)}
+
+  /* секции */
+  section{margin-top:4.2rem}
+  h2{
+    font-family:'Oswald', sans-serif; font-weight:500; text-transform:uppercase;
+    font-size:clamp(1.4rem, 5.5vw, 1.85rem); line-height:1.12; letter-spacing:.01em;
+  }
+  .sub{color:var(--dim); margin-top:.7rem; font-size:.98rem}
+  p{margin-top:.9rem}
+  a{color:var(--amber); text-decoration:none; border-bottom:1px solid rgba(227,154,74,.35)}
+  a:hover{border-bottom-color:var(--amber)}
+  a:focus-visible{outline:2px solid var(--amber); outline-offset:3px}
+
+  /* примеры */
+  .ideas{display:grid; grid-template-columns:1fr 1fr; gap:.55rem; margin-top:1.5rem}
+  @media(max-width:560px){.ideas{grid-template-columns:1fr}}
+  .ideas li{
+    list-style:none; background:var(--raised); border:1px solid var(--edge); border-radius:3px;
+    padding:.75rem .9rem; font-size:.93rem; line-height:1.45;
+  }
+  .ideas li::before{content:'—'; color:var(--amber); margin-right:.5rem}
+  .after{margin-top:1.2rem; color:var(--dim)}
+
+  /* способы */
+  .ways{margin-top:1.6rem; counter-reset:w}
+  .way{border-top:1px solid var(--edge); padding:1.4rem 0 1.5rem; counter-increment:w}
+  .way:last-of-type{border-bottom:1px solid var(--edge)}
+  .way-head{display:flex; align-items:baseline; gap:.7rem; flex-wrap:wrap}
+  .way-head .num{
+    font-family:'Oswald', sans-serif; font-size:1.5rem; font-weight:300; color:var(--amber);
+    line-height:1; min-width:1.2rem;
+  }
+  .way-head .name{font-family:'Oswald', sans-serif; font-weight:500; text-transform:uppercase;
+    font-size:1.15rem; letter-spacing:.01em}
+  .chip{
+    font-family:'IBM Plex Mono', monospace; font-size:.62rem; letter-spacing:.14em;
+    text-transform:uppercase; color:var(--amber); border:1px solid rgba(227,154,74,.4);
+    border-radius:99px; padding:.16rem .55rem;
+  }
+  .way p{margin-top:.6rem; color:var(--ink)}
+  .way p.q{color:var(--dim); font-size:.93rem}
+  .cmd{
+    display:block; margin-top:.9rem; background:#0e0b07; border:1px solid var(--edge);
+    border-left:2px solid var(--amber); border-radius:3px; padding:.8rem .95rem;
+    font-family:'IBM Plex Mono', monospace; font-size:.78rem; line-height:1.6;
+    color:var(--ink); white-space:pre-wrap; word-break:break-word;
+  }
+
+  /* «не нужно» */
+  .nots{margin-top:1.4rem}
+  .nots li{
+    list-style:none; display:flex; gap:.75rem; align-items:baseline;
+    padding:.6rem 0; border-bottom:1px dashed var(--edge); font-size:.98rem;
+  }
+  .nots li:last-child{border-bottom:0}
+  .nots .x{font-family:'IBM Plex Mono', monospace; color:var(--fire); font-size:.9rem}
+  .nots b{font-weight:600}
+
+  /* три окна */
+  .strip{display:grid; grid-template-columns:1fr 1fr 1fr; gap:.55rem; margin-top:1.6rem}
+  .card{
+    border-radius:3px; min-height:7.5rem; padding:.7rem .75rem; display:flex; flex-direction:column;
+    justify-content:space-between; border:1px solid var(--edge); text-decoration:none;
+  }
+  .card .cn{font-family:'IBM Plex Mono', monospace; font-size:.58rem; letter-spacing:.16em;
+    text-transform:uppercase; opacity:.8}
+  .card .cw{font-family:'Oswald', sans-serif; font-weight:300; font-size:.92rem;
+    text-transform:uppercase; letter-spacing:.02em; line-height:1.15}
+  .card.paper{background:#e9e6dd; color:#26282b; border-color:#cfcabd}
+  .card.night{background:linear-gradient(180deg,#05070d,#0b1120); color:#cdd3e1; border-color:#1b2436}
+  .card.free{background:transparent; color:var(--dim); border:1px dashed var(--stake)}
+  .card.free .cw{color:var(--amber)}
+  .strip a.card:hover{border-color:var(--amber)}
+  .cap{margin-top:1rem; color:var(--dim); font-size:.93rem}
+
+  /* финал */
+  .final{margin-top:4.2rem; border-top:1px solid var(--edge); padding-top:1.6rem}
+  .final .big{
+    font-family:'Oswald', sans-serif; font-weight:500; text-transform:uppercase;
+    font-size:clamp(1.5rem, 6.5vw, 2.1rem); line-height:1.1;
+  }
+  .final .big em{font-style:normal; color:var(--amber)}
+  .nav{display:flex; gap:1.4rem; flex-wrap:wrap; margin-top:1.8rem}
+  .nav a{font-family:'IBM Plex Mono', monospace; font-size:.72rem; letter-spacing:.12em;
+    text-transform:uppercase; border-bottom:1px dotted rgba(227,154,74,.4)}
+
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="rail" aria-label="Модули Ключа">
+    <span class="rail-label">модули</span>
+    <a class="mod" href="index.html">отчёт</a>
+    <a class="mod" href="kapsula.html">капсула</a>
+    <a class="mod add" href="dobavit.html" aria-current="page">+ своё</a>
+  </nav>
+
+  <div class="eyebrow">свободное место</div>
+  <h1>Поставь<br><em>своё.</em></h1>
+  <p class="lead">На сайте Ключа сейчас две страницы. Отчёт — что уже стоит на земле. Капсула — Димин период, изнутри. Третья свободна, и кроме тебя её никто не сделает.</p>
+
+  <div class="plot"><i></i>
+    <div class="big">здесь пока ничего</div>
+    <div class="small">место размечено · занимай</div>
+  </div>
+
+  <section>
+    <h2>Что тут может стоять</h2>
+    <p class="sub">Модуль — это одна страница. Всё, что ниже, уже годится.</p>
+    <ul class="ideas">
+      <li>плейлист, под который строилась сцена</li>
+      <li>карта поляны: что где стоит и куда ещё влезет</li>
+      <li>фотки с «Урожая», подписанные по-человечески</li>
+      <li>чертёж объекта, который пока живёт в голове</li>
+      <li>правила зоны, которую ведёшь ты</li>
+      <li>как заходить в баню и как из неё выходить</li>
+      <li>список того, что хочется успеть до сентября</li>
+      <li>экспонат в музей Ключа и подпись к нему</li>
+      <li>текст, который лежит с зимы и никому не показан</li>
+    </ul>
+    <p class="after">Годится всё, для чего в чате места нет, а в голове есть.</p>
+  </section>
+
+  <section>
+    <h2>Как поставить</h2>
+    <p class="sub">Способы идут от самого лёгкого. Первого хватает.</p>
+
+    <div class="ways">
+      <div class="way">
+        <div class="way-head"><span class="num">1</span><span class="name">Сказать вслух</span><span class="chip">2 минуты</span></div>
+        <p>Скинь в чат голосовое: что за штука и зачем она. Дальше не твоя забота — из голосового соберут страницу и покажут черновик. Не понравилось — скажешь, переделают.</p>
+      </div>
+
+      <div class="way">
+        <div class="way-head"><span class="num">2</span><span class="name">Прислать как есть</span><span class="chip">5 минут</span></div>
+        <p>Файл, фотки, текст, ссылка, плейлист — кидай в любом виде и в любом порядке. Раскладывать по местам — не твоя работа.</p>
+      </div>
+
+      <div class="way">
+        <div class="way-head"><span class="num">3</span><span class="name">Сделать самому</span><span class="chip">один вечер</span></div>
+        <p>Если хочется рулить самому: подключи своего ИИ — как это делается, написано в приложении В <a href="index.html">в отчёте</a>. Потом скажи ему это и дальше говори обычными словами.</p>
+        <span class="cmd">Хочу свою страницу на сайте Ключа. Прочитай AGENTS.md, посмотри папку Project/Documents/Final/site_goryaschiy_klyuch и сделай мне там отдельную страницу. Рассказываю, про что он и как должен выглядеть: …</span>
+        <p class="q">Дизайн можно не придумывать. «Сделай тёмное и медленное» — уже достаточное задание.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Что для этого не нужно</h2>
+    <ul class="nots">
+      <li><span class="x">✕</span><span><b>Уметь верстать.</b> Ни строчки кода руками.</span></li>
+      <li><span class="x">✕</span><span><b>Придумывать дизайн.</b> Хватит пары слов про настроение.</span></li>
+      <li><span class="x">✕</span><span><b>Доводить до готового.</b> Черновик встаёт так же, как готовое, и правится потом.</span></li>
+      <li><span class="x">✕</span><span><b>Согласовывать тему.</b> Страница твоя — значит, и тема твоя.</span></li>
+      <li><span class="x">✕</span><span><b>Бояться сломать.</b> Любое изменение откатывается. Пока не опубликовано, страницу видим только мы.</span></li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Как это встанет</h2>
+    <div class="strip">
+      <a class="card paper" href="index.html">
+        <span class="cn">01</span>
+        <span class="cw">Отчёт</span>
+      </a>
+      <a class="card night" href="kapsula.html">
+        <span class="cn">02</span>
+        <span class="cw">Капсула</span>
+      </a>
+      <div class="card free">
+        <span class="cn">03</span>
+        <span class="cw">Твоё</span>
+      </div>
+    </div>
+    <p class="cap">Три страницы, три разных вида, один адрес. К общему стилю приводить не будем: платформа затем и нужна, чтобы держать разное.</p>
+  </section>
+
+  <div class="final">
+    <div class="big">Самый короткий путь — <em>сказать вслух.</em></div>
+    <p>Одно голосовое в чат, и место перестанет быть свободным.</p>
+    <div class="nav">
+      <a href="index.html">← к отчёту</a>
+      <a href="kapsula.html">капсула →</a>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
