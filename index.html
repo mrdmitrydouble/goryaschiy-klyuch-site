@@ -49,12 +49,12 @@
   .player{margin-top:.9rem; display:flex; align-items:baseline; gap:.55rem; flex-wrap:wrap}
   .player button{
     font-family:ui-monospace, Menlo, monospace; font-size:.72rem; letter-spacing:.04em;
-    color:var(--muted); background:none; border:0; border-bottom:1px dotted var(--dashed);
-    padding:.1rem 0; cursor:pointer;
+    color:var(--muted); background:none; border:0; cursor:pointer; min-height:44px;
+    text-decoration:underline dotted; text-decoration-color:var(--dashed); text-underline-offset:4px;
   }
   .player button::before{content:'▸ '; color:var(--fire)}
   .player button[aria-pressed="true"]::before{content:'■ '}
-  .player button:hover{color:var(--fire); border-bottom-color:var(--fire)}
+  .player button:hover{color:var(--fire); text-decoration-color:var(--fire)}
   .player .tr{font-size:.7rem; color:var(--muted); letter-spacing:.03em}
   #soundbox{margin-top:.7rem}
   #soundbox[hidden]{display:none}
@@ -102,13 +102,14 @@
     list-style:none; -webkit-user-select:none; user-select:none;
     display:inline-flex; align-items:center; gap:.35rem;
     font-family:ui-monospace, Menlo, monospace; letter-spacing:.02em;
-    padding:.15rem 0; border-bottom:1px dotted var(--dashed);
+    padding:.75rem 0; min-height:44px;
+    text-decoration:underline dotted; text-decoration-color:var(--dashed); text-underline-offset:4px;
   }
   .tl summary::-webkit-details-marker{display:none}
   .tl summary::before{content:'▸'; font-size:.62rem; color:var(--fire)}
   .tl details[open] summary::before{content:'▾'}
   .tl details[open] summary{opacity:.65}
-  .tl summary:hover{color:var(--fire); border-bottom-color:var(--fire)}
+  .tl summary:hover{color:var(--fire); text-decoration-color:var(--fire)}
   .q{
     margin-top:.45rem; padding:.6rem .85rem; background:var(--card);
     border-left:3px solid var(--fire); border-radius:0 4px 4px 0;
@@ -136,7 +137,8 @@
   .switch{display:flex; gap:.5rem; margin-top:1.2rem; flex-wrap:wrap}
   .sw{
     font-family:ui-monospace, Menlo, monospace; font-size:.7rem; letter-spacing:.08em;
-    text-transform:uppercase; padding:.45rem .9rem; border:1px solid var(--line);
+    text-transform:uppercase; padding:0 .9rem; border:1px solid var(--line);
+    display:inline-flex; align-items:center; min-height:44px;
     border-radius:99px; background:var(--card); color:var(--muted); cursor:pointer;
     transition:none;
   }
@@ -250,23 +252,25 @@
     letter-spacing:.22em; text-transform:uppercase; color:var(--muted); margin-bottom:.5rem}
   .win-empty p{font-size:.88rem; color:var(--muted); margin:0}
   .addlink{
-    display:inline-block; margin-top:.75rem; background:none; border:0; padding:0;
+    display:inline-flex; align-items:center; min-height:44px; margin-top:.4rem; background:none; border:0; padding:0;
     font-family:ui-monospace, Menlo, monospace; font-size:.7rem; letter-spacing:.1em;
-    color:var(--fire); border-bottom:1px dotted var(--fire); cursor:pointer;
+    color:var(--fire); cursor:pointer;
+    text-decoration:underline dotted; text-underline-offset:4px;
   }
 
   /* ── панель модулей ── */
   .rail{
     position:sticky; top:0; z-index:20;
     display:flex; align-items:center; gap:.4rem; flex-wrap:wrap;
-    margin:0 -1.2rem 1.8rem; padding:.55rem 1.2rem;
+    margin:0 -1.2rem 1.8rem; padding:.3rem 1.2rem;
     background:var(--paper); border-bottom:1px solid var(--line);
   }
   .rail-label{font-size:.62rem; letter-spacing:.2em; text-transform:uppercase;
     color:var(--muted); margin-right:.2rem}
   .mod{
+    display:inline-flex; align-items:center; min-height:44px;
     font-family:ui-monospace, Menlo, monospace; font-size:.68rem; letter-spacing:.08em;
-    text-transform:uppercase; padding:.34rem .72rem; border:1px solid var(--line);
+    text-transform:uppercase; padding:0 .8rem; border:1px solid var(--line);
     border-radius:99px; background:var(--card); color:var(--muted);
     text-decoration:none; cursor:pointer; white-space:nowrap;
   }
@@ -915,12 +919,22 @@
       var ctx = cv.getContext('2d'), box = cv.parentNode;
       var dpr = Math.min(window.devicePixelRatio || 1, 2);
       var W = 0, H = 0, pts = [];
+      // постоянное зерно: окно выглядит одинаково при каждом заходе
+      var s = 20250401;
+      function rnd(){
+        s = s + 0x6D2B79F5 | 0;
+        var t = Math.imul(s ^ s >>> 15, 1 | s);
+        t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
+      }
       function seed(){
-        pts = [];
+        s = 20250401; pts = [];
+        // по клеткам с дрожанием — иначе окно на узком экране получается комками
         for (var i = 0; i < 16; i++) pts.push({
-          x: Math.random() * W, y: Math.random() * H,
-          vx: (Math.random() - 0.5) * 0.09, vy: (Math.random() - 0.5) * 0.09,
-          r: 0.7 + Math.random() * 1.1, warm: Math.random() > 0.3
+          x: ((i % 4) + 0.12 + rnd() * 0.76) * (W / 4),
+          y: (Math.floor(i / 4) + 0.12 + rnd() * 0.76) * (H / 4),
+          vx: (rnd() - 0.5) * 0.09, vy: (rnd() - 0.5) * 0.09,
+          r: 0.7 + rnd() * 1.1, warm: rnd() > 0.3
         });
       }
       function size(){
@@ -931,6 +945,7 @@
         if (!pts.length) seed();
       }
       function frame(){
+        if (!pts.length) size();
         ctx.clearRect(0, 0, W, H);
         var i, j, dx, dy, d, p;
         for (i = 0; i < pts.length; i++) for (j = i + 1; j < pts.length; j++){
